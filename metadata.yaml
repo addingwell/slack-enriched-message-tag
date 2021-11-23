@@ -1,0 +1,5 @@
+homepage: "https://www.addingwell.com"
+documentation: "https://github.com/addingwell/slack-enriched-message-tag/README.md"
+versions:
+  - sha: 6898511307827fb9c62a9c5bef93d3b3ba5e6a11
+    changeNotes: Initial release.
