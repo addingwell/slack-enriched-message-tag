@@ -5,3 +5,5 @@ versions:
     changeNotes: Initial release.
   - sha: c14d4c993026f274dec5ad408f3342d8ba071a99
     changeNotes: Add displayName to brand.
+  - sha: 75570b522cba7fd612fabb0cfbbd390aa44e82d5
+    changeNotes: Switch to webhook instead of token.
