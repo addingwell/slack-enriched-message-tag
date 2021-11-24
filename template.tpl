@@ -32,18 +32,11 @@ ___TEMPLATE_PARAMETERS___
 [
   {
     "type": "TEXT",
-    "name": "slack_api_key",
-    "displayName": "Slack API Key",
+    "name": "slack_webhook_url",
+    "displayName": "Slack Webhook URL",
     "simpleValueType": true,
-    "notSetText": "The API key is required.",
-    "help": "To get an API Key, you can look into this tutorial https://api.slack.com/tutorials/tracks/getting-a-token"
-  },
-  {
-    "type": "TEXT",
-    "name": "slack_channel",
-    "displayName": "Slack Channel",
-    "simpleValueType": true,
-    "defaultValue": "general"
+    "notSetText": "The webhook URL is required",
+    "help": "To get an API Key, you need to create an Application and create a webhook. More information in the documentation https://github.com/addingwell/slack-enriched-message-tag/blob/main/README.md"
   },
   {
     "type": "TEXT",
@@ -78,7 +71,7 @@ ___TEMPLATE_PARAMETERS___
       }
     ],
     "newRowTitle": "New parameter",
-    "help": "In this configuration, you can send all the custom parameters available in https://api.slack.com/methods/chat.postMessage#args"
+    "help": "In this configuration, you can send some of the custom parameters available in https://api.slack.com/methods/chat.postMessage#args\n(Such as unfurl_links to false for example)"
   }
 ]
 
@@ -88,16 +81,14 @@ ___SANDBOXED_JS_FOR_SERVER___
 const sendHttpRequest = require('sendHttpRequest');
 const JSON = require('JSON');
 
-const postHeaders = {'Content-Type': 'application/json', 'authorization': 'Bearer ' + data.slack_api_key };
-const url = 'https://slack.com/api/chat.postMessage';
+const postHeaders = {'Content-Type': 'application/json'};
 
 const postBody = {
-  channel: data.slack_channel,
   blocks: JSON.parse(data.blocks)
 };
 
+// to avoid confusion between giving the result of the block builder, we allow for both
 if (postBody.blocks && postBody.blocks.blocks) {
-  // to avoid confusion between giving the result of the block builder
   postBody.blocks = postBody.blocks.blocks;
 }
 
@@ -109,11 +100,19 @@ if (data.parameters) {
 
     const parameter = data.parameters[key];
 
-    postBody[parameter.key] = parameter.value;
+    let value = parameter.value;
+    if (value === 'true') {
+      value = true;
+    }
+    if (value === 'false') {
+      value = false;
+    }
+
+    postBody[parameter.key] = value;
   }
 }
 
-sendHttpRequest(url, (statusCode, headers, body) => {
+sendHttpRequest(data.slack_webhook_url, (statusCode, headers, body) => {
   if (statusCode >= 200 && statusCode < 300) {
     data.gtmOnSuccess();
   } else {
@@ -146,7 +145,7 @@ ___SERVER_PERMISSIONS___
             "listItem": [
               {
                 "type": 1,
-                "string": "https://slack.com/api/chat.postMessage"
+                "string": "https://hooks.slack.com/*"
               }
             ]
           }
@@ -155,6 +154,24 @@ ___SERVER_PERMISSIONS___
     },
     "clientAnnotations": {
       "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "logging",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "environments",
+          "value": {
+            "type": 1,
+            "string": "debug"
+          }
+        }
+      ]
     },
     "isRequired": true
   }
@@ -168,5 +185,5 @@ scenarios: []
 
 ___NOTES___
 
-Created on 11/23/2021, 5:09:37 PM
+Created on 11/24/2021, 11:57:23 AM
 
