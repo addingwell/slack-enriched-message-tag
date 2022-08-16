@@ -1,11 +1,11 @@
 homepage: "https://www.addingwell.com"
 documentation: "https://github.com/addingwell/slack-enriched-message-tag/blob/main/README.md"
 versions:
-  - sha: 6898511307827fb9c62a9c5bef93d3b3ba5e6a11
-    changeNotes: Initial release.
-  - sha: c14d4c993026f274dec5ad408f3342d8ba071a99
-    changeNotes: Add displayName to brand.
-  - sha: 75570b522cba7fd612fabb0cfbbd390aa44e82d5
-    changeNotes: Switch to webhook instead of token.
   - sha: 47683fd2843f03fdb4cf9e233571430b281c11e5
     changeNotes: Fix documentation.
+  - sha: 75570b522cba7fd612fabb0cfbbd390aa44e82d5
+    changeNotes: Switch to webhook instead of token.
+  - sha: c14d4c993026f274dec5ad408f3342d8ba071a99
+    changeNotes: Add displayName to brand.
+  - sha: 6898511307827fb9c62a9c5bef93d3b3ba5e6a11
+    changeNotes: Initial release.
